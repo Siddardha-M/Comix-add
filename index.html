@@ -1,0 +1,19 @@
+<link rel="manifest" href="manifest.json">
+<pre id="out">Share a post to this app</pre>
+<script>
+navigator.serviceWorker.register("sw.js");
+
+const pickFolder = ({ chapters, status }) =>
+  chapters > 100 || ["completed", "cancelled"].includes(status.toLowerCase())
+    ? "reading" : "planning";
+
+const p = new URLSearchParams(location.search);
+const text = (p.get("text") || "") + " " + (p.get("title") || "");
+const m = text.match(/\b(\d{5,8})\b/);
+
+if (/webcomics/i.test(text) && m) {
+  document.getElementById("out").textContent = "Code: " + m[1];
+  // next: code -> name, name -> Comix, then pickFolder()
+}
+// no code = do nothing
+</script>
